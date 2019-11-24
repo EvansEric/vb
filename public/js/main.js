@@ -54,94 +54,156 @@
             countdown();
         }
 
-        $('#from').on('click', function() {
+        $('#from').on('click', function () {
             $(this).attr('placeholder', '');
             $('#from_icon').css('visibility', 'hidden');
         });
-        $('#from').on('blur', function() {
+        $('#from').on('blur', function () {
             $(this).attr('placeholder', 'Check-In');
             $('#from_icon').css('visibility', 'visible');
         });
 
-        $('#to').on('click', function() {
+        $('#to').on('click', function () {
             $(this).attr('placeholder', '');
             $('#to_icon').css('visibility', 'hidden');
         });
-        $('#to').on('blur', function() {
+        $('#to').on('blur', function () {
             $(this).attr('placeholder', 'Check-Out');
             $('#to_icon').css('visibility', 'visible');
         });
 
         // Guest adust
-        $('#adults-minus').on('click', function(e) {
+        $('#adults-minus').on('click', function (e) {
             e.preventDefault()
             var adult_num = parseInt($('#adults').val());
-            if(adult_num > 0) {
+            if (adult_num > 0) {
                 $('#adults').val(adult_num - 1);
-            }else {
+            } else {
                 $('#adults').val(0);
             }
         });
 
-        $('#adults-plus').on('click', function(e) {
+        $('#adults-plus').on('click', function (e) {
             e.preventDefault()
             var adult_num = parseInt($('#adults').val());
-            if(adult_num >= 0 && adult_num !== 16) {
+            if (adult_num >= 0 && adult_num !== 16) {
                 $('#adults').val(adult_num + 1);
-            }else if(adult_num === 16){
+            } else if (adult_num === 16) {
                 $('#adults').val(16);
-            }else {
+            } else {
                 $('#adults').val(0);
             }
         });
 
         //Guest Kids
-        $('#kids-minus').on('click', function(e) {
+        $('#kids-minus').on('click', function (e) {
             e.preventDefault()
             var kids_num = parseInt($('#kids').val());
-            if(kids_num > 0) {
+            if (kids_num > 0) {
                 $('#kids').val(kids_num - 1);
-            }else {
+            } else {
                 $('#kids').val(0);
             }
         });
 
-        $('#kids-plus').on('click', function(e) {
+        $('#kids-plus').on('click', function (e) {
             e.preventDefault()
             var kids_num = parseInt($('#kids').val());
-            if(kids_num >= 0 && kids_num !== 5) {
+            if (kids_num >= 0 && kids_num !== 5) {
                 $('#kids').val(kids_num + 1);
-            }else if (kids_num === 5) {
+            } else if (kids_num === 5) {
                 $('#kids').val(5);
-            }else {
+            } else {
                 $('#kids').val(0);
             }
         });
 
         //Guest Pets
-        $('#pets-minus').on('click', function(e) {
+        $('#pets-minus').on('click', function (e) {
             e.preventDefault()
             var pets_num = $('#pets').val();
-            if(pets_num > 0) {
+            if (pets_num > 0) {
                 $('#pets').val(pets_num - 1);
-            }else {
+            } else {
                 $('#pets').val(0);
             }
         });
 
-        $('#pets-plus').on('click', function(e) {
+        $('#pets-plus').on('click', function (e) {
             e.preventDefault()
             var pets_num = parseInt($('#pets').val());
-            if(pets_num >= 0 && pets_num !== 2) {
+            if (pets_num >= 0 && pets_num !== 2) {
                 $('#pets').val(pets_num + 1);
-            }else if (pets_num === 2) {
+            } else if (pets_num === 2) {
                 $('#pets').val(2);
-            }else {
+            } else {
                 $('#pets').val(0);
             }
         });
 
-        $('#register_modal_submit').on('click', function() {
+        $('#guest_add').on('click', function () {
+            var adult_count = $('#adults').val();
+            var kid_count = $('#kids').val();
+            var pet_count = $('#pets').val();
+            var guest_count = parseInt(adult_count) + parseInt(kid_count);
+            $('#guest').attr('placeholder', 'Guests:' + guest_count.toString() + ' Pets:' + pet_count.toString());
+            $('#guest-modal').modal('hide');
+        });
+
+        $('#login_model_submit').on('click', function () {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            let url = window.location.origin + '/login';
+            let data = {
+                'email': $('#login_email').val(),
+                'password': $('#login_password').val()
+            };
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: data,
+                success: function () {
+                    $('#login-modal').modal('hide');
+                    window.location.href = '/';
+                },
+                error: function (e) {
+                    alert(e.responseText)
+                }
+            });
+        });
+
+        $('#login_password').on('keyup', function (e) {
+            e.preventDefault();
+            if (e.keyCode === 13) {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                let url = window.location.origin + '/login';
+                let data = {
+                    'email': $('#login_email').val(),
+                    'password': $('#login_password').val()
+                };
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: data,
+                    success: function () {
+                        $('#login-modal').modal('hide');
+                        window.location.href = '/';
+                    },
+                    error: function (e) {
+                        alert(e.responseText)
+                    }
+                });
+            }
+        });
+
+        $('#register_modal_submit').on('click', function () {
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -150,26 +212,48 @@
             let url = window.location.origin + '/register';
             let data = {
                 'name': $('#register_modal_name').val(),
-                'email': $('#email').val(),
-                'password': $('#password').val(),
-                'password_confirmation': $('#password_confirmation').val()
+                'email': $('#register_email').val(),
+                'password': $('#register_password').val(),
+                'password_confirmation': $('#register_password_confirmation').val()
             };
             $.ajax({
                 url: url,
                 type: 'POST',
                 data: data,
-                success: function() {
-                    alert('Success')
+                success: function () {
+                    $('#register_modal_name').modal('hide');
+                    window.location.href = '/';
                 },
-                error: function(e) {
+                error: function (e) {
                     alert(e.responseText)
                 }
             });
         });
 
-        $('#guest').on('click', function(){
+        $('#logout').on('click', function () {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            let url = window.location.origin + '/logout';
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: null,
+                success: function () {
+                    window.location.replace('/login');
+                },
+                error: function (e) {
+                    alert(e.responseText)
+                }
+            });
+        });
+
+
+        $('#guest').on('click', function () {
             $('#guest-modal').modal('show')
-        })
+        });
     }
 
     // Carousel //

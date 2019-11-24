@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+{{--    {{ dd(Auth::check()) }}--}}
 <div class="page-hero overlay overlay-blue no-overflow">
     <div class="overlay-text d-flex align-items-center">
         <div class="container">
@@ -855,7 +856,7 @@
     <!-- /.container -->
 </div>
 <!-- /.section -->
-<div class="section img" data-image-src="http://via.placeholder.com/800x600">
+<div class="section img" data-image-src="{{ asset('images/vacation_home.jpg') }}">
     <div class="container">
         <div class="row">
             <div class="offset-3 col-6">
@@ -891,7 +892,7 @@
                 </button>
             </div>
             <div class="modal-body">
-               <form method="post" >
+               <form>
                    <div class="form-group mt-5 ml-4">
                        <span><strong>ADULTS </strong></span>
                        <div class="w-75 float-right">
@@ -917,7 +918,7 @@
                        </div>
                    </div>
                    <hr id="guest-divider" />
-                   <input type="submit" class="btn btn-success mt-3 mr-3 float-right" value="Add" />
+                   <button type="button" class="btn btn-success mt-3 mr-3 float-right" id="guest_add">Add</button>
                </form>
             </div>
         </div>

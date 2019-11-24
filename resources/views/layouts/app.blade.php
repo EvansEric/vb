@@ -59,17 +59,12 @@
                     <!-- /.nav-item py-md-2 -->
                     <li class="nav-item dropdown py-md-2">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
-                           aria-haspopup="true" aria-expanded="true">Hotels</a>
+                           aria-haspopup="true" aria-expanded="true">Properties</a>
                         <!-- /.nav-link -->
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="hotel-list-sidebar-left.html">Hotel List left sidebar</a>
+                            <a class="dropdown-item" href="#">Hotels</a>
                             <!-- /.dropdown-item -->
-                            <a class="dropdown-item" href="hotel-list-sidebar-right.html">Hotel List right sidebar</a>
-                            <!-- /.dropdown-item -->
-                            <a class="dropdown-item" href="hotel-list-full-width.html">Hotel List Full Width</a>
-                            <!-- /.dropdown-item -->
-                            <a class="dropdown-item" href="hotel-details.html">Hotel Detail</a>
-                            <!-- /.dropdown-item -->
+                            <a class="dropdown-item" href="#">Vacation Rentals</a>
                         </div>
                         <!-- /.dropdown-menu -->
                     </li>
@@ -118,7 +113,7 @@
                     @if(Auth::check())
                         <li class="nav-item dropdown py-md-2">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true" aria-expanded="true">Renee Turner
+                               aria-haspopup="true" aria-expanded="true">Hi {{ explode(' ', Auth::user()->name)[0] }}
                                 <img src="http://via.placeholder.com/90x90" alt="user profile img"
                                      class="user-profile-img"/></a>
                             <!-- /.nav-link -->
@@ -127,7 +122,10 @@
                                 <!-- /.dropdown-item -->
                                 <a class="dropdown-item" href="#">Invite Friends</a>
                                 <!-- /.dropdown-item -->
-                                <a class="dropdown-item" href="#">Logout</a>
+                                <form method="get">
+                                    <button class="dropdown-item" id="logout">Logout</button>
+                                </form>
+
                                 <!-- /.dropdown-item -->
                             </div>
                             <!-- /.dropdown-menu -->
@@ -194,7 +192,7 @@
                     Reviews by
                 </div>
                 <!-- /.small mb-1 -->
-{{--                <img src="{{ asset('icons/TA_logo_primary.svg') }}" alt="" height="25">--}}
+                {{--                <img src="{{ asset('icons/TA_logo_primary.svg') }}" alt="" height="25">--}}
 
             </div>
             <!-- /.col-lg-3 col-md-3 col-sm-12 -->
@@ -360,22 +358,33 @@
                         Log in to continue
                     </h3>
                     <!-- /.title -->
+                    <form method="post" action="{{ url('/login') }}">
+                        {{ csrf_field() }}
+                        <div class="form-group">
+                            <input type="text" id="login_email" class="form-control form-control-lg" placeholder="Email Address"/>
+                            <!-- /.form-control -->
+                        </div>
+                        <!-- /.form-group -->
 
-                    <div class="form-group">
-                        <input type="text" class="form-control form-control-lg" placeholder="Email Address"/>
-                        <!-- /.form-control -->
-                    </div>
-                    <!-- /.form-group -->
+                        <div class="form-group">
+                            <input type="password" id="login_password" class="form-control form-control-lg" placeholder="Password"/>
+                            <!-- /.form-control -->
+                        </div>
+                        <!-- /.form-group -->
+                        <div class="form-group row">
+                            <div class="ml-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="remember" id="login_modal_remember" {{ old('remember') ? 'checked' : '' }}>
 
-                    <div class="form-group">
-                        <input type="text" class="form-control form-control-lg" placeholder="Password"/>
-                        <!-- /.form-control -->
-                    </div>
-                    <!-- /.form-group -->
+                                    <label class="form-check-label" for="login_modal_remember">
+                                        {{ __('Remember Me') }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
 
-                    <div class="mt-4 btn btn-primary btn-block btn-lg">
-                        Login
-                    </div>
+                        <button type="button" id="login_model_submit" class="mt-4 btn btn-primary btn-block btn-lg">Login</button>
+                    </form>
                     <!-- /.btn btn-primary -->
 
                     <div class="mt-3 text-center text-capitalize">
@@ -430,24 +439,27 @@
                 <div class="register-form">
                     <form id="register_form" method="post">
                         <div class="form-group">
-                            <input type="text" id="register_modal_name" class="form-control form-control-lg" placeholder="Name" name="name"/>
+                            <input type="text" id="register_modal_name" class="form-control form-control-lg"
+                                   placeholder="Name" />
                             <!-- /.form-control -->
                         </div>
                         <div class="form-group">
-                            <input type="text" name="email" id="email"  class="form-control form-control-lg"
+                            <input type="text"  id="register_email" class="form-control form-control-lg"
                                    placeholder="Enter your email address"/>
                             <!-- /.form-control -->
                         </div>
                         <!-- /.form-group -->
 
                         <div class="form-group">
-                            <input type="password" name="password" id="password" class="form-control form-control-lg" placeholder="Enter password"/>
+                            <input type="password" id="register_password" class="form-control form-control-lg"
+                                   placeholder="Enter password"/>
                             <!-- /.form-control -->
                         </div>
                         <!-- /.form-group -->
 
                         <div class="form-group">
-                            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control form-control-lg"
+                            <input type="password" id="register_password_confirmation"
+                                   class="form-control form-control-lg"
                                    placeholder="Confirm Password"/>
                             <!-- /.form-control -->
                         </div>
@@ -460,7 +472,8 @@
                         </div>
                         <!-- /.mt-3 -->
 
-                        <button type="button" id="register_modal_submit" class="mt-4 btn btn-secondary btn-block btn-lg">
+                        <button type="button" id="register_modal_submit"
+                                class="mt-4 btn btn-secondary btn-block btn-lg">
                             Register
                         </button>
                         <!-- /.btn btn-primary -->
@@ -509,7 +522,6 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content ">
             <div class="modal-body">
-
                 <div class="reset-password-form">
                     <h3 class="title">
                         Password Reset
