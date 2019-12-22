@@ -15,7 +15,7 @@
                         </div>
                         <!-- /.search-icon -->
                         <input type="text" class="search-input" placeholder='Houston, Texas, USA'
-                               onfocus="this.placeholder=''" onblur="this.placeholder='Houston, Texas, USA'"/>
+                               onfocus="this.placeholder=''" onblur="this.placeholder='Houston, Texas, USA'" id="autocomplete"/>
                         <!-- /.search-input -->
                     </div>
 

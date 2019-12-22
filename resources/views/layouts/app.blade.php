@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <!-- SEO meta tags -->
-    <meta name="keywords" content="travel listing, vacation listing, vacation"/>
+    <meta name="keywords" content="vacation listing, vacation home rentals"/>
     <meta name="description" content="Vacations and Beyond"/>
     <meta name="author" content="VacationsandBeyond.com"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -33,6 +33,7 @@
     <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css"/>
     <!-- :::::-[ Travelgo - Travel and Tours listings HTML template StyleSheet ]-:::::: -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
+    {{--    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDrThSZqXUz6DMejX1MnBLdrZtCkc8OG-c&libraries=places"></script>--}}
 </head>
 <!-- START-OF Home Page Body Tag -->
 <body>
@@ -118,11 +119,11 @@
                                      class="user-profile-img"/></a>
                             <!-- /.nav-link -->
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="profile-edit.html">Edit Profile</a>
+                                <a class="dropdown-item" href="{{ route('profile') }}">Profile</a>
                                 <!-- /.dropdown-item -->
                                 <a class="dropdown-item" href="#">Invite Friends</a>
                                 <!-- /.dropdown-item -->
-                                <form method="get">
+                                <form method="get" action="{{ route('logout') }}">
                                     <button class="dropdown-item" id="logout">Logout</button>
                                 </form>
 
@@ -315,13 +316,14 @@
 <script>
     $(function () {
         var todayDate = new Date();
-        var dateFormat = "mm/dd/yy",
+        var dateFormat = "dd-mm-yy",
             from = $("#from")
                 .datepicker({
-                    defaultDate: "+1w",
+                    //defaultDate: "+1w",
                     changeMonth: true,
                     numberOfMonths: 1,
-                    minDate: todayDate
+                    minDate: todayDate,
+                    dateFormat: dateFormat
                 })
                 .on("change", function () {
                     to.datepicker("option", "minDate", getDate(this));
@@ -347,7 +349,10 @@
         }
     });
 </script>
-
+<script>
+    var input = document.getElementById('autocomplete');
+    var autocomplete = new google.maps.places.Autocomplete(input);
+</script>
 <!-- START Login Modal -->
 <div id="login-modal" class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -358,23 +363,36 @@
                         Log in to continue
                     </h3>
                     <!-- /.title -->
+                    @if($errors->any())
+                        {{ $errors }}
+                        <div class="col-12 text-center alert-danger">
+                            @foreach($errors->all() as $error)
+                                <li id="login_error">
+
+                                </li>
+                            @endforeach
+                        </div>
+                    @endif
                     <form method="post" action="{{ url('/login') }}">
                         {{ csrf_field() }}
                         <div class="form-group">
-                            <input type="text" id="login_email" class="form-control form-control-lg" placeholder="Email Address"/>
+                            <input type="text" id="login_email" class="form-control form-control-lg"
+                                   placeholder="Email Address"/>
                             <!-- /.form-control -->
                         </div>
                         <!-- /.form-group -->
 
                         <div class="form-group">
-                            <input type="password" id="login_password" class="form-control form-control-lg" placeholder="Password"/>
+                            <input type="password" id="login_password" class="form-control form-control-lg"
+                                   placeholder="Password"/>
                             <!-- /.form-control -->
                         </div>
                         <!-- /.form-group -->
                         <div class="form-group row">
                             <div class="ml-4">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="login_modal_remember" {{ old('remember') ? 'checked' : '' }}>
+                                    <input class="form-check-input" type="checkbox" name="remember"
+                                           id="login_modal_remember" {{ old('remember') ? 'checked' : '' }}>
 
                                     <label class="form-check-label" for="login_modal_remember">
                                         {{ __('Remember Me') }}
@@ -383,7 +401,9 @@
                             </div>
                         </div>
 
-                        <button type="button" id="login_model_submit" class="mt-4 btn btn-primary btn-block btn-lg">Login</button>
+                        <button type="button" id="login_model_submit" class="mt-4 btn btn-primary btn-block btn-lg">
+                            Login
+                        </button>
                     </form>
                     <!-- /.btn btn-primary -->
 
@@ -440,11 +460,11 @@
                     <form id="register_form" method="post">
                         <div class="form-group">
                             <input type="text" id="register_modal_name" class="form-control form-control-lg"
-                                   placeholder="Name" />
+                                   placeholder="Name"/>
                             <!-- /.form-control -->
                         </div>
                         <div class="form-group">
-                            <input type="text"  id="register_email" class="form-control form-control-lg"
+                            <input type="text" id="register_email" class="form-control form-control-lg"
                                    placeholder="Enter your email address"/>
                             <!-- /.form-control -->
                         </div>
@@ -455,6 +475,7 @@
                                    placeholder="Enter password"/>
                             <!-- /.form-control -->
                         </div>
+
                         <!-- /.form-group -->
 
                         <div class="form-group">
@@ -462,6 +483,9 @@
                                    class="form-control form-control-lg"
                                    placeholder="Confirm Password"/>
                             <!-- /.form-control -->
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="lister"/> Are you listing a property?
                         </div>
                         <!-- /.form-group -->
 

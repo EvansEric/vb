@@ -1396,6 +1396,12 @@ footer .social-network li a i {
 	font-size: 4rem;
 }
 
+
+#logout{
+	cursor: pointer;
+}
+
+
 /*# sourceMappingURL=style.css.map */
 /*.input-wrapper {*/
 /*	position: relative;*/

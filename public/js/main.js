@@ -170,7 +170,11 @@
                     window.location.href = '/';
                 },
                 error: function (e) {
-                    alert(e.responseText)
+                    var error = JSON.parse(e.responseText);
+                    if(error.message) {
+                        var error = $('#login_error').text(error.message);
+                        return error;
+                    }
                 }
             });
         });
@@ -196,8 +200,8 @@
                         $('#login-modal').modal('hide');
                         window.location.href = '/';
                     },
-                    error: function (e) {
-                        alert(e.responseText)
+                    error: function () {
+                        return false;
                     }
                 });
             }
@@ -242,7 +246,7 @@
                 type: 'POST',
                 data: null,
                 success: function () {
-                    window.location.replace('/login');
+                    window.location = '/login';
                 },
                 error: function (e) {
                     alert(e.responseText)

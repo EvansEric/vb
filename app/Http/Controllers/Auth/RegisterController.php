@@ -56,11 +56,6 @@ class RegisterController extends Controller
         ]);
     }
 
-    public function register(Request $request)
-    {
-        $this->validator($request->all())->validate();
-    }
-
     /**
      * Create a new user instance after a valid registration.
      *
