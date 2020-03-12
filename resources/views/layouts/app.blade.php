@@ -313,6 +313,16 @@
         integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
         crossorigin="anonymous"></script>
 <script src="{{ asset('js/main.js') }}"></script>
+{{--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDrThSZqXUz6DMejX1MnBLdrZtCkc8OG-c&libraries=places"></script>--}}
+{{--<script>--}}
+{{--    $(document).ready(function () {--}}
+{{--        var input =  document.getElementById('autocomplete');--}}
+{{--        var autocomplete = new google.maps.places.Autocomplete(input, {--}}
+{{--            types: ['(regions)'],--}}
+{{--            componentRestrictions: {country: "US"}--}}
+{{--        });--}}
+{{--    });--}}
+{{--</script>--}}
 <script>
     $(function () {
         var todayDate = new Date();
@@ -348,10 +358,6 @@
             return date;
         }
     });
-</script>
-<script>
-    var input = document.getElementById('autocomplete');
-    var autocomplete = new google.maps.places.Autocomplete(input);
 </script>
 <!-- START Login Modal -->
 <div id="login-modal" class="modal" tabindex="-1" role="dialog">
