@@ -35,6 +35,7 @@
         <!-- /.section -->
         <div class="section">
             <div class="container">
+                <h2 style="text-align: center; text-decoration: underline; margin-bottom: 20px;">Properties</h2>
                 <div class="row">
                     <div class="offset-lg-2 offset-md-2 col-lg-8 col-md-8 col-sm-12">
                         <div class="row">
