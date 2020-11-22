@@ -50,4 +50,16 @@ class LoginController extends Controller
         return redirect('/login');
     }
 
+    public function validateLogin(Request $request)
+    {
+        $message = [
+            'email.required' => 'Username/Email is a required field'
+        ];
+        $user = $this->username();
+        $request->validate([
+            $this->username() => 'required|string',
+            'password' => 'required|string',
+        ], $message);
+    }
+
 }

@@ -113,45 +113,45 @@
                             </div>
                             <!-- /.header -->
                             <div class="body">
-                                <div class="form-group">
-                                    <label for="home-airport-input">Home Airport</label>
-                                    <!-- /.fa fa-user input-icon -->
-                                    <input id="home-airport-input" type="text" class="form-control" value="London Heathrow Airport (LHR)" placeholder="Enter your home air port" required/>
-                                    <!-- /.form-control -->
-                                </div>
                                 <!-- /.form-group -->
                                 <div class="form-group">
                                     <label for="street-address-input">Street Address</label>
                                     <!-- /.fa fa-user input-icon -->
-                                    <input id="street-address-input" type="text" class="form-control" value="46 Gray's Inn Rd, London, WC1X 8LP" placeholder="Enter your street address" required/>
+                                    <input id="street-address-input" type="text" class="form-control"  placeholder="Enter your street address" required/>
+                                    <!-- /.form-control -->
+                                </div>
+                                <div class="form-group">
+                                    <label for="street-address-input">Address 2 (Optional)</label>
+                                    <!-- /.fa fa-user input-icon -->
+                                    <input id="street-address-input" type="text" class="form-control"  placeholder="Enter Apt/Suite etc..." required/>
                                     <!-- /.form-control -->
                                 </div>
                                 <!-- /.form-group -->
                                 <div class="form-group">
                                     <label for="city-input">City</label>
                                     <!-- /.fa fa-user input-icon -->
-                                    <input id="city-input" type="text" class="form-control" value="London" placeholder="Enter your city" required/>
+                                    <input id="city-input" type="text" class="form-control" placeholder="Enter your city" required/>
                                     <!-- /.form-control -->
                                 </div>
                                 <!-- /.form-group -->
                                 <div class="form-group">
                                     <label for="state-input">State/Province/Region</label>
                                     <!-- /.fa fa-user input-icon -->
-                                    <input id="state-input" type="text" class="form-control" value="London" placeholder="Enter your State/Province/Region" required/>
+                                    <input id="state-input" type="text" class="form-control" placeholder="Enter your State/Province/Region" required/>
                                     <!-- /.form-control -->
                                 </div>
                                 <!-- /.form-group -->
                                 <div class="form-group">
                                     <label for="country-input">Country</label>
                                     <!-- /.fa fa-user input-icon -->
-                                    <input id="country-input" type="text" class="form-control" value="United Kingdom" placeholder="Enter your country" required/>
+                                    <input id="country-input" type="text" class="form-control" placeholder="Enter your country" required/>
                                     <!-- /.form-control -->
                                 </div>
                                 <!-- /.form-group -->
                                 <div class="form-group">
                                     <label for="zip-code-input">ZIP code/Postal code</label>
                                     <!-- /.fa fa-user input-icon -->
-                                    <input id="zip-code-input" type="text" class="form-control" value="3145667" placeholder="Enter your ZIP code/Postal code" required/>
+                                    <input id="zip-code-input" type="text" class="form-control" placeholder="Enter your ZIP code/Postal code" required/>
                                     <!-- /.form-control -->
                                 </div>
                                 <!-- /.form-group -->

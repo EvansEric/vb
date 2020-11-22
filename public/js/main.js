@@ -171,10 +171,7 @@
                 },
                 error: function (e) {
                     var error = JSON.parse(e.responseText);
-                    if(error.message) {
-                        var error = $('#login_error').text(error.message);
-                        return error;
-                    }
+
                 }
             });
         });
@@ -213,6 +210,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
             let url = window.location.origin + '/register';
             let data = {
                 'name': $('#register_modal_name').val(),
@@ -229,10 +227,32 @@
                     window.location.href = '/';
                 },
                 error: function (e) {
-                    alert(e.responseText)
+                    if (e.responseJSON.errors.name === "" || e.responseJSON.errors.email === "" || e.responseJSON.errors.password === "") {
+                        var error = document.getElementById("register_error");
+                        error.classList.add("pb-1", "pt-2", "mb-2");
+                    }
+                    else if (e.responseJSON.errors.password || !e.responseJSON.errors.email) {
+                        var error = document.getElementById("register_error");
+                        error.classList.add("pb-1", "pt-2", "mb-2");
+
+                        error.innerHTML = e.responseJSON.errors.password;
+
+                    }else if (e.responseJSON.errors.email || !e.responseJSON.errors.passwords) {
+                        var error = document.getElementById("register_error");
+                        error.innerHTML = e.responseJSON.errors.email;
+                    }
                 }
             });
         });
+        var reg_input = document.getElementById('register_modal_submit');
+        reg_input.addEventListener("keyup", function (e) {
+            var code;
+            if(e.key !== undefined) {
+                e.preventDefault();
+                code = e.key;
+                console.log("Enter pressed");
+            }
+        })
 
         $('#logout').on('click', function () {
             $.ajaxSetup({

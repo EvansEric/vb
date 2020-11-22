@@ -318,9 +318,12 @@
 {{--    $(document).ready(function () {--}}
 {{--        var input =  document.getElementById('autocomplete');--}}
 {{--        var autocomplete = new google.maps.places.Autocomplete(input, {--}}
-{{--            types: ['(regions)'],--}}
+{{--            types: ['geocode'],--}}
 {{--            componentRestrictions: {country: "US"}--}}
 {{--        });--}}
+{{--        google.maps.event.addListener(autocomplete, 'place_changed', function() {--}}
+{{--            var near_place = autocomplete.getPlace();--}}
+{{--        })--}}
 {{--    });--}}
 {{--</script>--}}
 <script>
@@ -370,11 +373,11 @@
                     </h3>
                     <!-- /.title -->
                     @if($errors->any())
-                        {{ $errors }}
+                        {{ dd($errors) }}
                         <div class="col-12 text-center alert-danger">
                             @foreach($errors->all() as $error)
                                 <li id="login_error">
-
+                                    {{ $error }}
                                 </li>
                             @endforeach
                         </div>
@@ -382,7 +385,7 @@
                     <form method="post" action="{{ url('/login') }}">
                         {{ csrf_field() }}
                         <div class="form-group">
-                            <input type="text" id="login_email" class="form-control form-control-lg"
+                            <input type="text" id="login_email" name="email" class="form-control form-control-lg"
                                    placeholder="Email Address"/>
                             <!-- /.form-control -->
                         </div>
@@ -463,6 +466,7 @@
         <div class="modal-content ">
             <div class="modal-body">
                 <div class="register-form">
+                    <div class="alert-danger text-center" id="register_error"></div>
                     <form id="register_form" method="post">
                         <div class="form-group">
                             <input type="text" id="register_modal_name" class="form-control form-control-lg"
