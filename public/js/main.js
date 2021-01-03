@@ -78,6 +78,10 @@
             var adult_num = parseInt($('#adults').val());
             if (adult_num > 0) {
                 $('#adults').val(adult_num - 1);
+                $('#adults-plus').prop('disabled', false);
+                $('#adults-plus').addClass('btn-success');
+                $('#adults-plus').removeClass('btn-secondary');
+                $('#adults-plus').css({cursor: "pointer"});
             } else {
                 $('#adults').val(0);
             }
@@ -90,6 +94,10 @@
                 $('#adults').val(adult_num + 1);
             } else if (adult_num === 16) {
                 $('#adults').val(16);
+                $('#adults-plus').prop('disabled', true);
+                $('#adults-plus').addClass('btn-secondary');
+                $('#adults-plus').removeClass('btn-success');
+                $('#adults-plus').css({cursor: "not-allowed"});
             } else {
                 $('#adults').val(0);
             }
@@ -101,6 +109,10 @@
             var kids_num = parseInt($('#kids').val());
             if (kids_num > 0) {
                 $('#kids').val(kids_num - 1);
+                $('#kids-plus').prop('disabled', false);
+                $('#kids-plus').addClass('btn-success');
+                $('#kids-plus').removeClass('btn-secondary');
+                $('#kids-plus').css({cursor: "pointer"});
             } else {
                 $('#kids').val(0);
             }
@@ -113,6 +125,10 @@
                 $('#kids').val(kids_num + 1);
             } else if (kids_num === 5) {
                 $('#kids').val(5);
+                $('#kids-plus').prop('disabled', true);
+                $('#kids-plus').addClass('btn-secondary');
+                $('#kids-plus').removeClass('btn-success');
+                $('#kids-plus').css({cursor: "not-allowed"});
             } else {
                 $('#kids').val(0);
             }
@@ -124,6 +140,10 @@
             var pets_num = $('#pets').val();
             if (pets_num > 0) {
                 $('#pets').val(pets_num - 1);
+                $('#pets-plus').prop('disabled', false);
+                $('#pets-plus').addClass('btn-success');
+                $('#pets-plus').removeClass('btn-secondary');
+                $('#pets-plus').css({cursor: "pointer"});
             } else {
                 $('#pets').val(0);
             }
@@ -136,6 +156,10 @@
                 $('#pets').val(pets_num + 1);
             } else if (pets_num === 2) {
                 $('#pets').val(2);
+                $('#pets-plus').prop('disabled', true);
+                $('#pets-plus').addClass('btn-secondary');
+                $('#pets-plus').removeClass('btn-success');
+                $('#pets-plus').css({cursor: "not-allowed"});
             } else {
                 $('#pets').val(0);
             }
@@ -150,6 +174,7 @@
             $('#guest-modal').modal('hide');
         });
 
+        // login model
         $('#login_model_submit').on('click', function () {
             $.ajaxSetup({
                 headers: {
@@ -171,14 +196,15 @@
                 },
                 error: function (e) {
                     var error = JSON.parse(e.responseText);
+                    $('#login_error').text(error.errors.email);
 
                 }
             });
         });
 
-        $('#login_password').on('keyup', function (e) {
-            e.preventDefault();
-            if (e.keyCode === 13) {
+        $('#login_password').on('keypress', function (e) {
+            var keycode = (e.keyCode ? e.keyCode : e.which);
+            if (keycode == '13') {
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -197,13 +223,17 @@
                         $('#login-modal').modal('hide');
                         window.location.href = '/';
                     },
-                    error: function () {
-                        return false;
+                    error: function (e) {
+                        var error = JSON.parse(e.responseText);
+                        $('#login_error').text(error.errors.email);
+
                     }
                 });
             }
+            e.stopPropagation();
         });
 
+        // register model
         $('#register_modal_submit').on('click', function () {
             $.ajaxSetup({
                 headers: {
@@ -227,31 +257,64 @@
                     window.location.href = '/';
                 },
                 error: function (e) {
-                    if (e.responseJSON.errors.name === "" || e.responseJSON.errors.email === "" || e.responseJSON.errors.password === "") {
-                        var error = document.getElementById("register_error");
-                        error.classList.add("pb-1", "pt-2", "mb-2");
+                    var name = $('#register_modal_name').val();
+                    var email = $('#register_email').val();
+                    var password = $('#register_password').val();
+                    var password_confirm = $('#register_password_confirmation').val();
+                    if (name === "" || email === "" || password === "") {
+                        var reg_error = $('#register_error');
+                        reg_error.text('All fields are required');
                     }
-                    else if (e.responseJSON.errors.password || !e.responseJSON.errors.email) {
-                        var error = document.getElementById("register_error");
-                        error.classList.add("pb-1", "pt-2", "mb-2");
-
-                        error.innerHTML = e.responseJSON.errors.password;
-
-                    }else if (e.responseJSON.errors.email || !e.responseJSON.errors.passwords) {
-                        var error = document.getElementById("register_error");
-                        error.innerHTML = e.responseJSON.errors.email;
+                    if(password !== password_confirm) {
+                        var reg_error = $('#register_error');
+                        reg_error.text('Password do not match');
                     }
                 }
             });
         });
-        var reg_input = document.getElementById('register_modal_submit');
-        reg_input.addEventListener("keyup", function (e) {
-            var code;
-            if(e.key !== undefined) {
-                e.preventDefault();
-                code = e.key;
-                console.log("Enter pressed");
+      $('#register_password_confirmation').on('keypress', function(e) {
+            var keycode = (e.keyCode ? e.keyCode : e.which);
+            if(keycode == '13') {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                let url = window.location.origin + '/register';
+                let data = {
+                    'name': $('#register_modal_name').val(),
+                    'email': $('#register_email').val(),
+                    'password': $('#register_password').val(),
+                    'password_confirmation': $('#register_password_confirmation').val()
+                };
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: data,
+                    success: function () {
+                        var success = $('#register_success').val();
+                        success.appendTo('You have successful Registered.');
+                        $('#register_modal_name').modal('hide');
+                        window.location.href = '/';
+                    },
+                    error: function (e) {
+                        let name = $('#register_modal_name').val();
+                        var email = $('#register_email').val();
+                        var password = $('#register_password').val();
+                        var password_confirm = $('#register_password_confirmation').val();
+                        if (name === "" || email === "" || password === "") {
+                            var reg_error = $('#register_error');
+                            reg_error.text('All fields are required');
+                        }
+                        if(password !== password_confirm) {
+                             reg_error = $('#register_error');
+                            reg_error.text('Passwords do not match');
+                        }
+                    }
+                });
             }
+            e.stopPropagation();
         })
 
         $('#logout').on('click', function () {

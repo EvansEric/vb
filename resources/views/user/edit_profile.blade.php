@@ -9,11 +9,14 @@
                     <div class="col-gl-3 col-md-3 col-sm-12">
                         <div class="sticky-sidebar">
                             <div class="text-center d-flex flex-column align-items-center justify-content-center mb-3">
-                                <div class="edit-profile-img">
-                                    <img src="http://via.placeholder.com/120x120" alt="profile img" class="profile-img"/>
-                                    <button type="button" style="position: absolute;">Edit</button>
-                                    <!-- /.profile-img -->
-                                </div>
+                                <form enctype="multipart/form-data" method="post" action="{{ route('update_avatar') }}">
+                                    <div class="edit-profile-img">
+                                        {{--                                    <img src="http://via.placeholder.com/120x120" data-avatar="avatar" alt="profile img" class="profile-img"/>--}}
+                                        <img src="{{ asset('images/default_avatar.jpg') }}" id="avatar" alt="profile img" class="profile-img" style="cursor: pointer"/>
+                                        <input type="file" id="avatar_file" style="display: none;">
+                                        <!-- /.profile-img -->
+                                    </div>
+                                </form>
                                 <!-- /.edit-profile-img -->
                                 <div class="mt-3">
                                     <h5 class="mb-2">
@@ -30,7 +33,7 @@
                                 <!-- /.mt-3 -->
                             </div>
                             <div class="list-group">
-                                <a href="profile.html" class="list-group-item list-group-item-action ">View Profile</a>
+                                <a href="{{ route('profile') }}" class="list-group-item list-group-item-action ">View Profile</a>
                                 <!-- /.list-group-item list-group-item-action -->
                                 <a href="profile-edit.html" class="list-group-item list-group-item-action active">Edit Profile</a>
                                 <!-- /.list-group-item list-group-item-action -->
@@ -46,8 +49,11 @@
                         <!-- /.sticky-sidebar -->
                     </div>
                     <!-- /.col-gl-3 col-md-3 col-sm-12 -->
+
                     <div class="col-gl-9 col-md-9 col-sm-12">
                         <h3 class="mb-4">Edit Profile</h3>
+                        <form method="post" action="{{ route('edit_profile') }}">
+                            @csrf
                         <div class="widget">
                             <div class="header">
                                 <div class="title">
@@ -81,7 +87,7 @@
                                     <input id="email-address-input" type="text" class="form-control" value="{{ Auth::user()->email }}" placeholder="Enter your email address" disabled/>
                                     <!-- /.form-control -->
                                     <div class="hint-text mt-2">
-                                        We won’t share your private email address with other Travelgo users.
+                                        We won’t share your private email address with other Vacation and Beyond users.
                                         <a href="#">Learn more</a>.
                                     </div>
                                     <!-- /.hint-text -->
@@ -90,20 +96,22 @@
                                 <div class="form-group">
                                     <label for="phone-number-input">Phone number</label>
                                     <!-- /.fa fa-user input-icon -->
-                                    <input id="phone-number-input" type="text" class="form-control" value="+1 333 666 0234" placeholder="Enter your email address" required/>
+                                    <input id="phone-number-input" data-mask="(000)000-0000" name="phone_number" type="text" class="form-control" value="{{ $profile['phone1'] }}" placeholder="Enter your phone number" required/>
                                     <!-- /.form-control -->
                                     <div class="hint-text mt-2">
-                                        This is only shared once you have a confirmed booking with another Travelgo user.
+                                        This is only shared once you have a confirmed booking with another Vacation and Beyond user.
                                     </div>
                                     <!-- /.hint-text -->
                                 </div>
                                 <!-- /.form-group -->
-                                <div class="btn btn-primary mt-2">Save Change</div>
+{{--                                <button class="btn btn-primary mt-2">Save Change</button>--}}
                                 <!-- /.btn btn-primary mt-2 -->
                             </div>
                             <!-- /.body -->
                         </div>
+
                         <!-- /.widget -->
+
                         <div class="widget">
                             <div class="header">
                                 <div class="title">
@@ -117,85 +125,90 @@
                                 <div class="form-group">
                                     <label for="street-address-input">Street Address</label>
                                     <!-- /.fa fa-user input-icon -->
-                                    <input id="street-address-input" type="text" class="form-control"  placeholder="Enter your street address" required/>
+                                    <input id="street-address-input" name="address1" type="text"  value="{{ $profile['address1'] }}" class="form-control"  placeholder="Enter your street address" required/>
                                     <!-- /.form-control -->
                                 </div>
                                 <div class="form-group">
-                                    <label for="street-address-input">Address 2 (Optional)</label>
+                                    <label for="street-address-input2">Address 2 (Optional)</label>
                                     <!-- /.fa fa-user input-icon -->
-                                    <input id="street-address-input" type="text" class="form-control"  placeholder="Enter Apt/Suite etc..." required/>
+                                    <input id="street-address-input2" name="address2" type="text" value="{{ $profile['address2'] }}" class="form-control"  placeholder="Enter Apt/Suite etc..." required/>
                                     <!-- /.form-control -->
                                 </div>
                                 <!-- /.form-group -->
                                 <div class="form-group">
                                     <label for="city-input">City</label>
                                     <!-- /.fa fa-user input-icon -->
-                                    <input id="city-input" type="text" class="form-control" placeholder="Enter your city" required/>
+                                    <input id="city-input" name="city" type="text" value="{{ $profile['city'] }}" class="form-control" placeholder="Enter your city" required/>
                                     <!-- /.form-control -->
                                 </div>
                                 <!-- /.form-group -->
                                 <div class="form-group">
-                                    <label for="state-input">State/Province/Region</label>
+                                    <label for="state-input">States</label>
                                     <!-- /.fa fa-user input-icon -->
-                                    <input id="state-input" type="text" class="form-control" placeholder="Enter your State/Province/Region" required/>
+                                    <select class="form-control" id="state" name="state">
+                                        @if($selected)
+                                            <option value="{{ $selected }}" selected>{{ $states[$selected] }}</option>
+                                        @else
+                                            <option value="0" selected disabled>State</option>
+                                        @endif
+                                        @foreach($states as $state_key => $state)
+                                            <option value="{{$state_key}}">{{ $state }}</option>
+                                        @endforeach
+                                    </select>
                                     <!-- /.form-control -->
                                 </div>
-                                <!-- /.form-group -->
-                                <div class="form-group">
-                                    <label for="country-input">Country</label>
-                                    <!-- /.fa fa-user input-icon -->
-                                    <input id="country-input" type="text" class="form-control" placeholder="Enter your country" required/>
-                                    <!-- /.form-control -->
-                                </div>
-                                <!-- /.form-group -->
                                 <div class="form-group">
                                     <label for="zip-code-input">ZIP code/Postal code</label>
                                     <!-- /.fa fa-user input-icon -->
-                                    <input id="zip-code-input" type="text" class="form-control" placeholder="Enter your ZIP code/Postal code" required/>
+                                    <input id="zip-code-input" name="zip" type="text" value="{{ $profile['zip'] }}" class="form-control" placeholder="Enter your ZIP code/Postal code" required/>
                                     <!-- /.form-control -->
                                 </div>
                                 <!-- /.form-group -->
-                                <div class="btn btn-primary mt-2">Save Change</div>
+                                <input name="form1" class="btn btn-primary mt-2" type="submit" value="Save Changes">
                                 <!-- /.btn btn-primary mt-2 -->
                             </div>
                             <!-- /.body -->
                         </div>
+                        </form> <!-- End of  -->
                         <!-- /.widget -->
-                        <div class="widget">
-                            <div class="header">
-                                <div class="title">
-                                    Change Password
+                        <form method="post" action="{{ route('edit_profile') }}">
+                            @csrf
+                            <div class="widget">
+                                <div class="header">
+                                    <div class="title">
+                                        Change Password
+                                    </div>
+                                    <!-- /.title -->
                                 </div>
-                                <!-- /.title -->
+                                <!-- /.header -->
+                                <div class="body">
+                                    <div class="form-group">
+                                        <label for="current-password-input">Current password</label>
+                                        <!-- /.fa fa-user input-icon -->
+                                        <input id="current-password-input" name="current_password" type="password" class="form-control" placeholder="Enter your current password" required/>
+                                        <!-- /.form-control -->
+                                    </div>
+                                    <!-- /.form-group -->
+                                    <div class="form-group">
+                                        <label for="new-password-input">New password</label>
+                                        <!-- /.fa fa-user input-icon -->
+                                        <input id="new-password-input" name="new_password" type="password" class="form-control" placeholder="Enter new password" required/>
+                                        <!-- /.form-control -->
+                                    </div>
+                                    <!-- /.form-group -->
+                                    <div class="form-group">
+                                        <label for="confirm-password-input">Confirm new password</label>
+                                        <!-- /.fa fa-user input-icon -->
+                                        <input id="confirm-password-input" name="confirm_password" type="password" class="form-control" placeholder="retype your new password" required/>
+                                        <!-- /.form-control -->
+                                    </div>
+                                    <!-- /.form-group -->
+                                    <input class="btn btn-primary mt-2" type="submit" name="form2" value="Change Password">
+                                    <!-- /.btn btn-primary mt-2 -->
+                                </div>
+                                <!-- /.body -->
                             </div>
-                            <!-- /.header -->
-                            <div class="body">
-                                <div class="form-group">
-                                    <label for="current-password-input">Current password</label>
-                                    <!-- /.fa fa-user input-icon -->
-                                    <input id="current-password-input" type="text" class="form-control" placeholder="Enter your current password" required/>
-                                    <!-- /.form-control -->
-                                </div>
-                                <!-- /.form-group -->
-                                <div class="form-group">
-                                    <label for="new-password-input">New password</label>
-                                    <!-- /.fa fa-user input-icon -->
-                                    <input id="new-password-input" type="text" class="form-control" placeholder="Enter new password" required/>
-                                    <!-- /.form-control -->
-                                </div>
-                                <!-- /.form-group -->
-                                <div class="form-group">
-                                    <label for="confirm-password-input">Confirm new password</label>
-                                    <!-- /.fa fa-user input-icon -->
-                                    <input id="confirm-password-input" type="text" class="form-control" placeholder="retype your new password" required/>
-                                    <!-- /.form-control -->
-                                </div>
-                                <!-- /.form-group -->
-                                <div class="btn btn-primary mt-2">Change password</div>
-                                <!-- /.btn btn-primary mt-2 -->
-                            </div>
-                            <!-- /.body -->
-                        </div>
+                        </form>
                         <!-- /.widget -->
                     </div>
                     <!-- /.col-gl-9 col-md-9 col-sm-12 -->
@@ -246,14 +259,14 @@
                                 <div class="row">
                                     <div class="col-md-6 col-lg-6 col-sm-12">
                                         <div class=" btn btn-outline-secondary no-round btn-block btn-lg">
-                                            <img src="assets/icons/facebook-icon.svg" alt="google icon" class="icon mr-2"/> Facebook
+                                            <img src="{{ asset('icon/facebook-icon.svg') }}" alt="google icon" class="icon mr-2"/> Facebook
                                         </div>
                                         <!-- /.btn btn-primary -->
                                     </div>
                                     <!-- /.col-md-6 col-lg-6 col-sm-12 -->
                                     <div class="col-md-6 col-lg-6 col-sm-12 mt-2 mt-lg-0 mt-sm-0">
                                         <div class=" btn btn-outline-secondary no-round btn-block btn-lg d-flex align-items-center justify-content-center">
-                                            <img src="assets/icons/google-pluse-icon.svg" alt="google icon" class="icon mr-2"/> Google
+                                            <img src="{{ asset('icon/google-pluse-icon.svg') }}" alt="google icon" class="icon mr-2"/> Google
                                         </div>
                                         <!-- /.btn btn-primary -->
                                     </div>
@@ -326,14 +339,17 @@
                                 <div class="row">
                                     <div class="col-md-6 col-lg-6 col-sm-12">
                                         <div class=" btn btn-outline-secondary no-round btn-block btn-lg">
-                                            <img src="assets/icons/facebook-icon.svg" alt="google icon" class="icon mr-2"/> Facebook
+                                            <form method="post">
+                                                @method('patch')
+                                                <img src="{{ asset('icon/facebook-icon.svg') }}" alt="google icon" class="icon mr-2"/> Facebook
+                                            </form>
                                         </div>
                                         <!-- /.btn btn-primary -->
                                     </div>
                                     <!-- /.col-md-6 col-lg-6 col-sm-12 -->
                                     <div class="col-md-6 col-lg-6 col-sm-12">
                                         <div class=" btn btn-outline-secondary no-round btn-block btn-lg">
-                                            <img src="assets/icons/google-pluse-icon.svg" alt="google icon" class="icon mr-2"/> Google
+                                            <img src="{{ asset('icon/google-pluse-icon.svg') }}" alt="google icon" class="icon mr-2"/> Google
                                         </div>
                                         <!-- /.btn btn-primary -->
                                     </div>

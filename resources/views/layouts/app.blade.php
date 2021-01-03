@@ -27,13 +27,19 @@
     <link rel="stylesheet" href="{{ asset('vendors/ion.rangeslider/css/ion.rangeSlider.css') }}"/>
     <link rel="stylesheet" href="{{ asset('vendors/ion.rangeslider/css/ion.rangeSlider.skinFlat.css') }}"/>
     <link rel="stylesheet" href="{{ asset('vendors/icheck/skins/square/aero.css') }}"/>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="{{ asset('css/jquery-ui.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/jquery-ui.structure.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/jquery-ui.theme.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.css"/>
 
     <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css"/>
     <!-- :::::-[ Travelgo - Travel and Tours listings HTML template StyleSheet ]-:::::: -->
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
     {{--    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDrThSZqXUz6DMejX1MnBLdrZtCkc8OG-c&libraries=places"></script>--}}
+    @if(Route::current()->getName() == 'register')
+        @toastr_css
+    @endif
 </head>
 <!-- START-OF Home Page Body Tag -->
 <body>
@@ -59,14 +65,12 @@
                     </li>
                     <!-- /.nav-item py-md-2 -->
                     <li class="nav-item dropdown py-md-2">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
-                           aria-haspopup="true" aria-expanded="true">Properties</a>
+                        <a href="#" class="nav-link">Rentals</a>
                         <!-- /.nav-link -->
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Hotels</a>
-                            <!-- /.dropdown-item -->
-                            <a class="dropdown-item" href="#">Vacation Rentals</a>
-                        </div>
+{{--                        <div class="dropdown-menu">--}}
+{{--                            <!-- /.dropdown-item -->--}}
+{{--                            <a class="dropdown-item" href="#">Vacation Rentals</a>--}}
+{{--                        </div>--}}
                         <!-- /.dropdown-menu -->
                     </li>
                     <!-- /.nav-item py-md-2 -->
@@ -204,22 +208,26 @@
                 <!-- /.footer-title -->
                 <ul class="footer-nav">
                     <li class="footer-nav-item">
-                        <a href="terms-conditions.html" class="footer-link">Terms of Use</a>
+                        <a href="{{ route('terms-of-use') }}" class="footer-link">Terms of Use</a>
                         <!-- /.footer-link -->
                     </li>
                     <!-- /.footer-nav-item -->
                     <li class="footer-nav-item">
-                        <a href="privacy-policy.html" class="footer-link">Privacy</a>
+                        <a href="{{ route('privacy') }}" class="footer-link">Privacy</a>
                         <!-- /.footer-link -->
                     </li>
                     <!-- /.footer-nav-item -->
                     <li class="footer-nav-item">
-                        <a href="#" class="footer-link">Locations</a>
+                        <a href="#" class="footer-link">About Us</a>
                         <!-- /.footer-link -->
                     </li>
                     <!-- /.footer-nav-item -->
                     <li class="footer-nav-item">
                         <a href="#" class="footer-link">Contact us</a>
+                        <!-- /.footer-link -->
+                    </li>
+                    <li class="footer-nav-item">
+                        <a href="#" class="footer-link">FAQ</a>
                         <!-- /.footer-link -->
                     </li>
                     <!-- /.footer-nav-item -->
@@ -306,13 +314,19 @@
 <script src="{{ asset('vendors/icheck/icheck.min.js') }}"></script>
 <script src="{{ asset('vendors/countdown/jquery.countdown.min.js') }}"></script>
 <script src="{{ asset('js/js.cookie.js') }}"></script>
+@if(Route::current()->getName() == 'register')
+    @toastr_js
+    @toastr_render
+@endif
+@if(Route::current()->getName() == 'edit_profile')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+@endif
+
 {{--<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>--}}
 <!-- ::::::-[ Travelgo - Travel and Tours listings HTML template Javascript ]-::::::   -->
-<script
-        src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
-        integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
-        crossorigin="anonymous"></script>
+<script src="{{ asset('js/jquery-ui.min.js') }}"></script>
 <script src="{{ asset('js/main.js') }}"></script>
+
 {{--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDrThSZqXUz6DMejX1MnBLdrZtCkc8OG-c&libraries=places"></script>--}}
 {{--<script>--}}
 {{--    $(document).ready(function () {--}}
@@ -372,6 +386,7 @@
                         Log in to continue
                     </h3>
                     <!-- /.title -->
+                    <div id="login_error" class="text-danger mb-1"></div>
                     @if($errors->any())
                         {{ dd($errors) }}
                         <div class="col-12 text-center alert-danger">
@@ -466,7 +481,8 @@
         <div class="modal-content ">
             <div class="modal-body">
                 <div class="register-form">
-                    <div class="alert-danger text-center" id="register_error"></div>
+                    <div class="text-danger text-center mb-2" id="register_error"></div>
+                    <div class="text-success text-center mb-2" id="register_success"></div>
                     <form id="register_form" method="post">
                         <div class="form-group">
                             <input type="text" id="register_modal_name" class="form-control form-control-lg"

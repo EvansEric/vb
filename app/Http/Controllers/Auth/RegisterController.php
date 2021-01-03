@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User;
 use App\Models\Profile;
 use App\Http\Controllers\Controller;
+use File;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Storage;
 
 class RegisterController extends Controller
 {
@@ -31,7 +34,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = '/login';
 
     /**
      * Create a new controller instance.
@@ -69,18 +72,22 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \App\User
+     * @return \App\Models\User
      */
     protected function create(array $data)
     {
-        $new_user =  User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
-
+        if($user instanceof Model) {
+            toastr()->success('Registration was successful','VB says thank you', ['timeOut' => 5000]);
+        }
+        $path = '/images/users/' . md5($data['email']);
+        Storage::makeDirectory($path, 0755, true);
         return Profile::create([
-            'id' => $new_user->id
+            'user_id' => $user->id
         ]);
     }
 

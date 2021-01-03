@@ -6,3 +6,9 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+.btn-vb-default {
+    background: $primary-color-five;
+    border-radius: 4px;
+    color: #fff;
+}

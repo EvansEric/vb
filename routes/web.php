@@ -15,9 +15,19 @@
 Auth::routes();
 
 
-
+//Home
 Route::get('/', 'HomeController@index')->name('home');
+// Terms of Use
+Route::get('/terms-of-use', 'HomeController@termsOfUse')->name('terms-of-use');
+Route::get('/privacy', 'HomeController@privacy')->name('privacy');
+
+
+//Profile
 Route::get('user/profile', 'ProfileController@profile')->name('profile');
 Route::get('user/edit_profile', 'ProfileController@editProfile')->name('edit_profile');
+Route::post('user/edit_profile', 'ProfileController@updateProfile')->name('edit_profile');
+Route::post('/user/edit_profile_image', 'ProfileController@updateAvatar')->name('update_avatar');
 
+
+//Logout
 Route::get('logout', 'Auth\LoginController@logout');

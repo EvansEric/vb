@@ -62,7 +62,7 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" id="register_submit" class="btn btn-primary">Register</button>
+                                <button type="submit" id="register_submit" class="btn btn-vb-default">Register</button>
                             </div>
                         </div>
                     </form>

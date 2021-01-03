@@ -15,4 +15,12 @@ class HomeController extends Controller
     {
         return view('home.home');
     }
+
+    public function termsOfUse() {
+        return view('home.terms-of-use');
+    }
+
+    public function privacy() {
+        return view('home.privacy');
+    }
 }
