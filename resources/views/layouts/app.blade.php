@@ -306,7 +306,7 @@
 <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
 <script src="{{ asset('vendors/popper.js/popperjs.min.js') }}"></script>
 <script src="{{ asset('vendors/bootstrap.4.1/js/bootstrap.min.js') }}"></script>
-<script src="{{ asset('vendors/owl-carousel/owl.carousel.min.js') }}"></script>
+<script src="{{ asset('vendors/owl-carousel/owl.carousel.min.js') }}" defer></script>
 <script src="{{ asset('vendors/parallax/parallax-scroll.js') }}"></script>
 <script src="{{ asset('vendors/sticky/jquery.sticky-sidebar.js') }}"></script>
 <script src="{{ asset('vendors/sticky-kit/sticky-kit.js') }}"></script>
@@ -325,7 +325,7 @@
 {{--<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>--}}
 <!-- ::::::-[ Travelgo - Travel and Tours listings HTML template Javascript ]-::::::   -->
 <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
-<script src="{{ asset('js/main.js') }}"></script>
+<script src="{{ asset('js/main.js') }}" defer></script>
 
 {{--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDrThSZqXUz6DMejX1MnBLdrZtCkc8OG-c&libraries=places"></script>--}}
 {{--<script>--}}

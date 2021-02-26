@@ -520,6 +520,10 @@ header .navbar .nav-item .dropdown-menu .dropdown-item {
 	display: flex;
 }
 
+.guest::placeholder, .to_date::placeholder, .from_date::placeholder{
+    font-size: 13px;
+}
+
 .search {
 	border-radius: 4px !important;
 	height: 58px !important;
@@ -1401,6 +1405,9 @@ footer .social-network li a i {
 	cursor: pointer;
 }
 
+#avatar {
+    cursor: pointer;
+}
 
 /*# sourceMappingURL=style.css.map */
 /*.input-wrapper {*/

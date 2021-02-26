@@ -9,13 +9,16 @@
                     <div class="col-gl-3 col-md-3 col-sm-12">
                         <div class="sticky-sidebar">
                             <div class="text-center d-flex flex-column align-items-center justify-content-center mb-3">
-                                <form enctype="multipart/form-data" method="post" action="{{ route('update_avatar') }}">
+                                <form enctype="multipart/form-data" method="post" action="{{ route('update_avatar') }}" id="avatar_form">
+                                    @csrf
                                     <div class="edit-profile-img">
                                         {{--                                    <img src="http://via.placeholder.com/120x120" data-avatar="avatar" alt="profile img" class="profile-img"/>--}}
-                                        <img src="{{ asset('images/default_avatar.jpg') }}" id="avatar" alt="profile img" class="profile-img" style="cursor: pointer"/>
-                                        <input type="file" id="avatar_file" style="display: none;">
+                                        <img src="{{ asset('images/default_avatar.jpg') }}" name="avatar" id="avatar" alt="Profile Image" class="profile-img" />
+                                        <input type="file" id="avatar_file" name="avatar_file" style="display: none;">
                                         <!-- /.profile-img -->
+
                                     </div>
+                                    <p style="font-size: 8px;">Only .png and .jpeg images are allowed.</p>
                                 </form>
                                 <!-- /.edit-profile-img -->
                                 <div class="mt-3">

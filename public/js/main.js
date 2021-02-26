@@ -170,6 +170,7 @@
             var kid_count = $('#kids').val();
             var pet_count = $('#pets').val();
             var guest_count = parseInt(adult_count) + parseInt(kid_count);
+
             $('#guest').attr('placeholder', 'Guests:' + guest_count.toString() + ' Pets:' + pet_count.toString());
             $('#guest-modal').modal('hide');
         });
@@ -341,6 +342,34 @@
         $('#guest').on('click', function () {
             $('#guest-modal').modal('show')
         });
+
+        $('#avatar_form').on('change', function(e) {
+           e.preventDefault();
+           var formData = new FormData(this);
+           var url = window.location.origin + '/user/update_avatar';
+
+           $.ajax({
+               type: 'post',
+               url: url,
+               data: formData,
+               cache: false,
+               contentType: false,
+               processData: false,
+               success: function(data) {
+                    console.log('Good')
+               },
+               error: function(data) {
+                    console.log('Bad')
+               }
+           });
+        });
+        $('#avatar').on('click', function(e){
+            e.preventDefault();
+             $('#avatar_file').on('change', function() {
+                $('#avatar_form').submit();
+             });
+        });
+
     }
 
     // Carousel //

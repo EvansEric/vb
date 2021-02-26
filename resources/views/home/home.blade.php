@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-{{--    {{ dd(Auth::check()) }}--}}
 <div class="page-hero overlay overlay-blue no-overflow">
     <div class="overlay-text d-flex align-items-center">
         <div class="container">
@@ -42,8 +41,7 @@
 
                     <div class="float-left mt-3 ml-1 calendar-container">
                         <div class="d-inline-block">
-                            <input type="submit" id="search" name="search" class="btn btn-book-now search"
-                                   value="Search"/>
+                            <button class="btn btn-book-now search" id="search">Search</button>
                         </div>
                     </div>
 

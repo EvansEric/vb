@@ -26,7 +26,7 @@ Route::get('/privacy', 'HomeController@privacy')->name('privacy');
 Route::get('user/profile', 'ProfileController@profile')->name('profile');
 Route::get('user/edit_profile', 'ProfileController@editProfile')->name('edit_profile');
 Route::post('user/edit_profile', 'ProfileController@updateProfile')->name('edit_profile');
-Route::post('/user/edit_profile_image', 'ProfileController@updateAvatar')->name('update_avatar');
+Route::post('/user/update_avatar', 'ProfileController@updateAvatar')->name('update_avatar');
 
 
 //Logout
