@@ -252,7 +252,7 @@
     "get-intrinsic": "^1.0.1",
     "get-value": "^2.0.6",
     "glob": "^7.1.6",
-    "glob-parent": "^3.1.0",
+    "glob-parent": "^5.1.2",
     "glob-to-regexp": "^0.3.0",
     "global-modules": "^2.0.0",
     "global-prefix": "^1.0.2",
