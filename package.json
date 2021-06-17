@@ -476,7 +476,7 @@
     "pkg-dir": "^4.2.0",
     "portfinder": "^1.0.28",
     "posix-character-classes": "^0.1.1",
-    "postcss": "^7.0.35",
+    "postcss": "^7.0.36",
     "postcss-calc": "^7.0.5",
     "postcss-colormin": "^4.0.3",
     "postcss-convert-values": "^4.0.1",
